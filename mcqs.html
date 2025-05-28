@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Language MCQ Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .question-number {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option {
+            margin: 5px 0;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        .selected {
+            background-color: #d4edda;
+        }
+        .correct {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 5px;
+        }
+        .score-display {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #1a252f;
+        }
+        .hidden {
+            display: none;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress {
+            height: 10px;
+            background-color: #28a745;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>C Language MCQ Quiz</h1>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="score-display">
+            Score: <span id="score">0</span>/100
+        </div>
+        
+        <div class="controls">
+            <button id="check-answers">Check Answers</button>
+            <button id="reset-quiz">Reset Quiz</button>
+        </div>
+        
+        <div id="quiz-container"></div>
+    </div>
+
+    <script>
+        // Quiz data from the PDF
+        const quizData = [
+            {
+                question: "1. What is the correct syntax to declare a variable in C?",
+                options: ["A) int x;", "B) x int;", "C) integer x;", "D) var x;"],
+                answer: "A) int x;"
+            },
+            {
+                question: "2. Which of the following is a correct comment in C?",
+                options: ["A) /* comment */", "B) # comment", "C) // comment", "D) -- comment"],
+                answer: "A) /* comment */"
+            },
+            {
+                question: "3. What is the size of an int on a typical 32-bit system?",
+                options: ["A) 2 bytes", "B) 4 bytes", "C) 8 bytes", "D) 1 byte"],
+                answer: "B) 4 bytes"
+            },
+            {
+                question: "4. Which operator is used to access the value at the address stored in a pointer?",
+                options: ["A) &", "B) *", "C) ->", "D) %"],
+                answer: "B) *"
+            },
+            {
+                question: "5. Which loop is guaranteed to execute at least once?",
+                options: ["A) for", "B) while", "C) do...while", "D) if"],
+                answer: "C) do...while"
+            },
+            {
+                question: "6. Which of the following is not a valid storage class in C?",
+                options: ["A) auto", "B) static", "C) register", "D) public"],
+                answer: "D) public"
+            },
+            {
+                question: "7. What is the output of printf(\"%d\", 5 + 3 * 2)?",
+                options: ["A) 16", "B) 11", "C) 21", "D) 13"],
+                answer: "B) 11"
+            },
+            {
+                question: "8. What is the correct way to declare a pointer to an integer?",
+                options: ["A) int *ptr;", "B) pointer int ptr;", "C) int ptr;", "D) *int ptr;"],
+                answer: "A) int *ptr;"
+            },
+            {
+                question: "9. What is the default return type of a function in C if not specified?",
+                options: ["A) float", "B) void", "C) int", "D) double"],
+                answer: "C) int"
+            },
+            {
+                question: "10. Which of these functions is used to allocate memory dynamically?",
+                options: ["A) malloc()", "B) alloc()", "C) calloc()", "D) realloc()"],
+                answer: "A) malloc()"
+            },
+            {
+                question: "11. Which of the following is a correct format specifier for a float?",
+                options: ["A) %c", "B) %d", "C) %f", "D) %s"],
+                answer: "C) %f"
+            },
+            {
+                question: "12. What is the output of sizeof(char)?",
+                options: ["A) 2", "B) 4", "C) 1", "D) 8"],
+                answer: "C) 1"
+            },
+            {
+                question: "13. What does \\n represent in C?",
+                options: ["A) Space", "B) Null", "C) Tab", "D) Newline"],
+                answer: "D) Newline"
+            },
+            {
+                question: "14. Which keyword is used to prevent modification of a variable?",
+                options: ["A) const", "B) static", "C) final", "D) define"],
+                answer: "A) const"
+            },
+            {
+                question: "15. Which of these is used to include a standard library in C?",
+                options: ["A) #include", "B) import", "C) use", "D) load"],
+                answer: "A) #include"
+            },
+            {
+                question: "16. What does strcmp() function do?",
+                options: ["A) Copies two strings", "B) Compares two strings", "C) Reverses a string", "D) Concatenates two strings"],
+                answer: "B) Compares two strings"
+            },
+            {
+                question: "17. Which data structure is used by C for function call management?",
+                options: ["A) Stack", "B) Queue", "C) Array", "D) Heap"],
+                answer: "A) Stack"
+            },
+            {
+                question: "18. What does break do in a loop?",
+                options: ["A) Continues to next iteration", "B) Terminates the loop", "C) Skips current iteration", "D) Restarts the loop"],
+                answer: "B) Terminates the loop"
+            },
+            {
+                question: "19. Which header file is needed for printf() function?",
+                options: ["A) stdlib.h", "B) conio.h", "C) stdio.h", "D) string.h"],
+                answer: "C) stdio.h"
+            },
+            {
+                question: "20. What will 5 / 2 return in C?",
+                options: ["A) 2.5", "B) 2", "C) 3", "D) 2.0"],
+                answer: "B) 2"
+            },
+            {
+                question: "21. Which operator has the highest precedence in C?",
+                options: ["A) +", "B) *", "C) ()", "D) ="],
+                answer: "C) ()"
+            },
+            {
+                question: "22. How are strings represented in C?",
+                options: ["A) char array", "B) string object", "C) text type", "D) str type"],
+                answer: "A) char array"
+            },
+            {
+                question: "23. What is the value of 10 % 3?",
+                options: ["A) 3", "B) 1", "C) 0", "D) 2"],
+                answer: "D) 2"
+            },
+            {
+                question: "24. Which function reads a character from the user?",
+                options: ["A) getchar()", "B) gets()", "C) putchar()", "D) printf()"],
+                answer: "A) getchar()"
+            },
+            {
+                question: "25. What is the result of strlen(\"HELLOHI\")?",
+                options: ["A) 7", "B) 6", "C) 8", "D) 0"],
+                answer: "A) 7"
+            },
+            {
+                question: "26. Which of the following functions is used to open a file in C?",
+                options: ["A) file_open()", "B) openfile()", "C) fopen()", "D) file()"],
+                answer: "C) fopen()"
+            },
+            {
+                question: "27. What is the keyword used to define a macro in C?",
+                options: ["A) macro", "B) define", "C) #define", "D) #macro"],
+                answer: "C) #define"
+            },
+            {
+                question: "28. What is the output type of the expression sizeof(3.14)?",
+                options: ["A) int", "B) float", "C) size_t", "D) double"],
+                answer: "C) size_t"
+            },
+            {
+                question: "29. Which operator is used for conditional branching in a single line?",
+                options: ["A) if", "B) switch", "C) ? :", "D) &&"],
+                answer: "C) ? :"
+            },
+            {
+                question: "30. What is the function of fflush(stdin); in C (non-standard)?",
+                options: ["A) Flushes file", "B) Clears input buffer", "C) Deletes file", "D) Closes stream"],
+                answer: "B) Clears input buffer"
+            },
+            {
+                question: "31. What is the extension of a C source file?",
+                options: ["A)..cs", "B)..cpp", "C).c", "D).java"],
+                answer: "C).c"
+            },
+            {
+                question: "32. How do you write a single-line comment in C?",
+                options: ["A) /* comment */", "B) // comment", "C) -- comment", "D) ## comment"],
+                answer: "B) // comment"
+            },
+            {
+                question: "33. What will be the result of 10 == 10?",
+                options: ["A) 0", "B) 1", "C) true", "D) error"],
+                answer: "B) 1"
+            },
+            {
+                question: "34. Which of the following denotes a preprocessor directive?",
+                options: ["A) @", "B) $", "C) #", "D) %"],
+                answer: "C) #"
+            },
+            {
+                question: "35. Which function is used to copy one string to another in C?",
+                options: ["A) strcpy()", "B) copy()", "C) strcopy()", "D) strmove()"],
+                answer: "A) strcpy()"
+            },
+            {
+                question: "36. Which of these is a correct main function declaration?",
+                options: ["A) int main()", "B) main()", "C) void main", "D) def main()"],
+                answer: "A) int main()"
+            },
+            {
+                question: "37. What is the index of the first element in a C array?",
+                options: ["A) 0", "B) 1", "C) -1", "D) Depends"],
+                answer: "A) 0"
+            },
+            {
+                question: "38. How would you declare a 2D array of integers in C?",
+                options: ["A) int arr[2][3];", "B) int arr(2,3);", "C) int[2,3] arr;", "D) array arr[2][3];"],
+                answer: "A) int arr[2][3];"
+            },
+            {
+                question: "39. What is the return type of malloc()?",
+                options: ["A) int *", "B) float *", "C) void *", "D) size_t"],
+                answer: "C) void *"
+            },
+            {
+                question: "40. What is the correct way to end a switch case?",
+                options: ["A) break;", "B) stop;", "C) return;", "D) end;"],
+                answer: "A) break;"
+            },
+            {
+                question: "41. What keyword is used to create a structure in C?",
+                options: ["A) struct", "B) class", "C) define", "D) union"],
+                answer: "A) struct"
+            },
+            {
+                question: "42. What is the output of printf(\"%d\", 4 == 5);?",
+                options: ["A) true", "B) 1", "C) 0", "D) error"],
+                answer: "C) 0"
+            },
+            {
+                question: "43. Which of the following is not a valid loop in C?",
+                options: ["A) for", "B) repeat", "C) do...while", "D) while"],
+                answer: "B) repeat"
+            },
+            {
+                question: "44. What is the result of int x = 5 / 2;?",
+                options: ["A) 2.5", "B) 2", "C) 3", "D) Compilation error"],
+                answer: "B) 2"
+            },
+            {
+                question: "45. What does fclose(fp); do in C?",
+                options: ["A) Opens a file", "B) Resets file pointer", "C) Closes the file", "D) Deletes the file"],
+                answer: "C) Closes the file"
+            },
+            {
+                question: "46. Which operator is used to get the address of a variable?",
+                options: ["A) *", "B) %", "C) &", "D) $"],
+                answer: "C) &"
+            },
+            {
+                question: "47. Which of the following is not a valid identifier in C?",
+                options: ["A) my_var", "B) _temp", "C) 123abc", "D) totalSum"],
+                answer: "C) 123abc"
+            },
+            {
+                question: "48. What does int *ptr = NULL; mean?",
+                options: ["A) ptr holds a garbage address", "B) ptr is uninitialized", "C) ptr points to address 0", "D) ptr is a function pointer"],
+                answer: "C) ptr points to address 0"
+            },
+            {
+                question: "49. What is typedef used for?",
+                options: ["A) Create new variables", "B) Allocate memory", "C) Define new data type names", "D) Import header files"],
+                answer: "C) Define new data type names"
+            },
+            {
+                question: "50. What does the % operator do in C?",
+                options: ["A) Percentage", "B) Modulus (remainder)", "C) Power", "D) Division"],
+                answer: "B) Modulus (remainder)"
+            },
+            {
+                question: "51. Which keyword is used to pass arguments by reference in C?",
+                options: ["A) ref", "B) pointer", "C) No keyword, use pointers", "D) reference"],
+                answer: "C) No keyword, use pointers"
+            },
+            {
+                question: "52. What is the correct format specifier for printing an unsigned int?",
+                options: ["A) %f", "B) %d", "C) %u", "D) %x"],
+                answer: "C) %u"
+            },
+            {
+                question: "53. Which function is used to write a character to the screen in C?",
+                options: ["A) getchar()", "B) putchar()", "C) puts()", "D) printc()"],
+                answer: "B) putchar()"
+            },
+            {
+                question: "54. Which of the following cannot be a structure member?",
+                options: ["A) int", "B) float", "C) function", "D) pointer"],
+                answer: "C) function"
+            },
+            {
+                question: "55. What is the value of 10 in C?",
+                options: ["A) 0", "B) 1", "C) -1", "D) undefined"],
+                answer: "B) 1"
+            },
+            {
+                question: "56. Which of the following is used to terminate a C program immediately?",
+                options: ["A) end()", "B) exit()", "C) return", "D) break"],
+                answer: "B) exit()"
+            },
+            {
+                question: "57. The volatile keyword in C is used for:",
+                options: ["A) Fast variables", "B) Preventing compiler optimization", "C) Loop termination", "D) Math operations"],
+                answer: "B) Preventing compiler optimization"
+            },
+            {
+                question: "58. Which header file includes the definition of malloc()?",
+                options: ["A) stdio.h", "B) stdlib.h", "C) memory.h", "D) alloc.h"],
+                answer: "B) stdlib.h"
+            },
+            {
+                question: "59. What happens if a pointer is not initialized in C?",
+                options: ["A) Compilation error", "B) It points to NULL", "C) It holds a garbage value", "D) Crashes immediately"],
+                answer: "C) It holds a garbage value"
+            },
+            {
+                question: "60. Which of the following is true about recursion in C?",
+                options: ["A) A function calling another function", "B) A function calling itself", "C) Loop inside a function", "D) Function inside a structure"],
+                answer: "B) A function calling itself"
+            },
+            {
+                question: "61. Which of these can be used to handle multiple return values from a function?",
+                options: ["A) return multiple", "B) global variables", "C) use of pointers", "D) Both B and C"],
+                answer: "D) Both B and C"
+            },
+            {
+                question: "62. Which of the following is a compound assignment operator?",
+                options: ["A) ++", "B) --", "C) +=", "D) =="],
+                answer: "C) +="
+            },
+            {
+                question: "63. What is the result of sizeof(int) * 2 on a 32-bit system?",
+                options: ["A) 8", "B) 4", "C) 2", "D) 6"],
+                answer: "A) 8"
+            },
+            {
+                question: "64. What is the term for converting one data type to another explicitly?",
+                options: ["A) Implicit casting", "B) Auto conversion", "C) Type casting", "D) Binding"],
+                answer: "C) Type casting"
+            },
+            {
+                question: "65. In which memory section are local variables stored?",
+                options: ["A) Stack", "B) Heap", "C) Data", "D) Code"],
+                answer: "A) Stack"
+            },
+            {
+                question: "66. What is the output of: printf(\"%d\", sizeof(A));",
+                options: ["A) 1", "B) 2", "C) 4", "D) Depends on compiler"],
+                answer: "C) 4"
+            },
+            {
+                question: "67. What happens when you exceed array bounds in C?",
+                options: ["A) Error message", "B) Compilation fails", "C) Undefined behavior", "D) Memory overflow exception"],
+                answer: "C) Undefined behavior"
+            },
+            {
+                question: "68. Which keyword is used to return control from a function?",
+                options: ["A) return", "B) exit", "C) break", "D) continue"],
+                answer: "A) return"
+            },
+            {
+                question: "69. Which of these can hold both integers and floats in C?",
+                options: ["A) int", "B) float", "C) union", "D) struct"],
+                answer: "C) union"
+            },
+            {
+                question: "70. Which function is used to read a string (including spaces) in C?",
+                options: ["A) scanf()", "B) gets()", "C) fread()", "D) fgets()"],
+                answer: "D) fgets()"
+            },
+            {
+                question: "71. Which function sets a block of memory to zero in C?",
+                options: ["A) memset()", "B) setzero()", "C) zero()", "D) clear()"],
+                answer: "A) memset()"
+            },
+            {
+                question: "72. What is a dangling pointer?",
+                options: ["A) A pointer not pointing to anything", "B) A pointer that points to a freed memory", "C) A NULL pointer", "D) A pointer to a function"],
+                answer: "B) A pointer that points to a freed memory"
+            },
+            {
+                question: "73. What is the output of printf(\"%d\", 'A');?",
+                options: ["A) A", "B) 65", "C) Error", "D) 'A'"],
+                answer: "B) 65"
+            },
+            {
+                question: "74. What is the main purpose of a do...while loop over a while loop?",
+                options: ["A) To execute at least once", "B) Better syntax", "C) Easier to use", "D) Used in recursion"],
+                answer: "A) To execute at least once"
+            },
+            {
+                question: "75. Which of these is not an integer data type in C?",
+                options: ["A) short", "B) long", "C) float", "D) unsigned"],
+                answer: "C) float"
+            },
+            {
+                question: "76. Which of these is a bitwise operator in C?",
+                options: ["A) &&", "B) ||", "C) &", "D) ^^"],
+                answer: "C) &"
+            },
+            {
+                question: "77. Which of the following best describes a union in C?",
+                options: ["A) Stores different data types using the same memory location", "B) Similar to array", "C) Only holds integer types", "D) Private structure"],
+                answer: "A) Stores different data types using the same memory location"
+            },
+            {
+                question: "78. Which memory function is used to change the size of a dynamically allocated memory block?",
+                options: ["A) realloc()", "B) reallocmem()", "C) resize()", "D) realloc_block()"],
+                answer: "A) realloc()"
+            },
+            {
+                question: "79. What is the purpose of the register keyword in C?",
+                options: ["A) Store variable in cache", "B) Store variable in CPU register for faster access", "C) Store variable on disk", "D) Make variable global"],
+                answer: "B) Store variable in CPU register for faster access"
+            },
+            {
+                question: "80. What will be the output of printf(\"%c\", 65);?",
+                options: ["A) A", "B) 65", "C) Error", "D) a"],
+                answer: "A) A"
+            },
+            {
+                question: "81. What is the default value of an uninitialized local variable in C?",
+                options: ["A) 0", "B) Garbage value", "C) NULL", "D) Not allowed"],
+                answer: "B) Garbage value"
+            },
+            {
+                question: "82. What is the correct way to declare a constant pointer to an int?",
+                options: ["A) const int *ptr;", "B) int * const ptr;", "C) const * int ptr;", "D) pointer const int;"],
+                answer: "B) int * const ptr;"
+            },
+            {
+                question: "83. Which header file contains strlen()?",
+                options: ["A) stdio.h", "B) math.h", "C) string.h", "D) ctype.h"],
+                answer: "C) string.h"
+            },
+            {
+                question: "84. What does #undef do in C?",
+                options: ["A) Unassigns a variable", "B) Deletes a macro definition", "C) Clears memory", "D) Closes file"],
+                answer: "B) Deletes a macro definition"
+            },
+            {
+                question: "85. What is void* in C?",
+                options: ["A) A function return type", "B) A pointer to void type", "C) Unused pointer", "D) Invalid type"],
+                answer: "B) A pointer to void type"
+            },
+            {
+                question: "86. Which function is safer than gets() for reading strings?",
+                options: ["A) scanf()", "B) input()", "C) fgets()", "D) readline()"],
+                answer: "C) fgets()"
+            },
+            {
+                question: "87. What happens if you free memory twice in C?",
+                options: ["A) Safe", "B) Ignored", "C) Undefined behavior", "D) Compiler error"],
+                answer: "C) Undefined behavior"
+            },
+            {
+                question: "88. Which of the following converts string to integer?",
+                options: ["A) stoi()", "B) to_int()", "C) atoi()", "D) strtoi()"],
+                answer: "C) atoi()"
+            },
+            {
+                question: "89. Which keyword is used to create an alias for a data type?",
+                options: ["A) typedef", "B) define", "C) alias", "D) struct"],
+                answer: "A) typedef"
+            },
+            {
+                question: "90. Which of these is true about const variables?",
+                options: ["A) They can't be declared", "B) They can be modified", "C) They must be initialized at declaration", "D) They're optional"],
+                answer: "C) They must be initialized at declaration"
+            },
+            {
+                question: "91. Which is true for global variables in C?",
+                options: ["A) Accessible only within functions", "B) Defined inside functions", "C) Accessible throughout the program", "D) Must be declared static"],
+                answer: "C) Accessible throughout the program"
+            },
+            {
+                question: "92. What does the static keyword mean for a variable declared in a function?",
+                options: ["A) Global visibility", "B) Retains value between calls", "C) Faster execution", "D) Stored on heap"],
+                answer: "B) Retains value between calls"
+            },
+            {
+                question: "93. What is the output of: int x = 3; x += x++; printf(\"%d\", x);",
+                options: ["A) 6", "B) 7", "C) 8", "D) Undefined"],
+                answer: "B) 7"
+            },
+            {
+                question: "94. Which of these is a logical operator?",
+                options: ["A) =", "B) &", "C) &&", "D) ⇨"],
+                answer: "C) &&"
+            },
+            {
+                question: "95. How do you declare a function that returns nothing in C?",
+                options: ["A) function()", "B) void function()", "C) int function()", "D) null function()"],
+                answer: "B) void function()"
+            },
+            {
+                question: "96. Which operator is used to access structure members using a pointer?",
+                options: ["A) .", "B) ->", "C) &", "D) *"],
+                answer: "B) ->"
+            },
+            {
+                question: "97. Which function is used to convert lowercase to uppercase?",
+                options: ["A) strupr()", "B) toupper()", "C) upper()", "D) capitalize()"],
+                answer: "B) toupper()"
+            },
+            {
+                question: "98. Which operator is right-associative in C?",
+                options: ["A) +", "B) =", "C) *", "D) &&"],
+                answer: "B) ="
+            },
+            {
+                question: "99. What is the output of printf(\"%s\", NULL);?",
+                options: ["A) NULL", "B) (null)", "C) Segmentation fault", "D) Empty string"],
+                answer: "C) Segmentation fault"
+            },
+            {
+                question: "100. Which of these is not a valid format specifier in printf()?",
+                options: ["A) %d", "B) %s", "C) %q", "D) %f"],
+                answer: "C) %q"
+            }
+        ];
+
+        // Initialize the quiz
+        let score = 0;
+        let answeredQuestions = 0;
+        const quizContainer = document.getElementById('quiz-container');
+        const scoreDisplay = document.getElementById('score');
+        const progressBar = document.getElementById('progress');
+        const checkAnswersBtn = document.getElementById('check-answers');
+        const resetQuizBtn = document.getElementById('reset-quiz');
+
+        // Create the quiz questions
+        function createQuiz() {
+            quizContainer.innerHTML = '';
+            score = 0;
+            answeredQuestions = 0;
+            scoreDisplay.textContent = score;
+            progressBar.style.width = '0%';
+
+            quizData.forEach((questionData, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                questionElement.dataset.index = index;
+
+                const questionNumber = document.createElement('div');
+                questionNumber.className = 'question-number';
+                questionNumber.textContent = questionData.question;
+                questionElement.appendChild(questionNumber);
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'options';
+
+                questionData.options.forEach(option => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.textContent = option;
+                    optionElement.dataset.answer = option === questionData.answer;
+                    optionElement.addEventListener('click', () => selectOption(optionElement, questionElement));
+                    optionsContainer.appendChild(optionElement);
+                });
+
+                questionElement.appendChild(optionsContainer);
+                quizContainer.appendChild(questionElement);
+            });
+        }
+
+        // Handle option selection
+        function selectOption(optionElement, questionElement) {
+            // Remove selected class from all options in this question
+            const options = questionElement.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            optionElement.classList.add('selected');
+        }
+
+        // Check all answers
+        function checkAnswers() {
+            const questions = quizContainer.querySelectorAll('.question');
+            let correctAnswers = 0;
+
+            questions.forEach(question => {
+                const selectedOption = question.querySelector('.option.selected');
+                const options = question.querySelectorAll('.option');
+                
+                if (selectedOption) {
+                    answeredQuestions++;
+                    
+                    // Show correct answer
+                    options.forEach(option => {
+                        if (option.dataset.answer === 'true') {
+                            option.classList.add('correct');
+                            
+                            const correctAnswer = document.createElement('div');
+                            correctAnswer.className = 'correct-answer';
+                            correctAnswer.textContent = `Correct answer: ${option.textContent}`;
+                            question.appendChild(correctAnswer);
+                            
+                            if (selectedOption === option) {
+                                correctAnswers++;
+                                score++;
+                            } else {
+                                selectedOption.classList.add('incorrect');
+                            }
+                        }
+                    });
+                }
+            });
+
+            scoreDisplay.textContent = score;
+            progressBar.style.width = `${(answeredQuestions / quizData.length) * 100}%`;
+        }
+
+        // Event listeners
+        checkAnswersBtn.addEventListener('click', checkAnswers);
+        resetQuizBtn.addEventListener('click', createQuiz);
+
+        // Initialize the quiz
+        createQuiz();
+    </script>
+</body>
+</html>
